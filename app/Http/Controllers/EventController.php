@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -23,12 +24,44 @@ class EventController extends Controller
                 $request->input('origin'),
                 $request->input('amount')
             );
+        } elseif ($request->input('type') === 'transfer') {
+            return $this->transfer(
+                $request->input('origin'),
+                $request->input('amount'),
+                $request->input('destination')
+            );
         }
+
         abort(404, 'Route not found!');
     }
 
     private function transfer($origin, $amount, $destination)
     {
+        // Si la cuenta de origen no existe devolvemos un 404
+        $accountOrigin = Account::findOrFail($origin);
+        $accountDestination = Account::firstOrCreate([
+            "id" => $destination
+        ]);
+
+        DB::transaction(function () use ($accountOrigin, $accountDestination, $amount) {
+
+            $accountOrigin->balance -= $amount;
+            $accountDestination->balance += $amount;
+
+            $accountOrigin->save();
+            $accountDestination->save();
+        });
+
+        return response()->json([
+            "origin" => [
+                "id" => $origin,
+                "balance" => $accountOrigin->balance
+            ],
+            "destination" => [
+                "id" => $destination,
+                "balance" => $accountDestination->balance
+            ]
+        ], 201);
 
     }
 
@@ -43,7 +76,7 @@ class EventController extends Controller
                 "id" => $origin,
                 "balance" => $account->balance
             ]
-        ]);
+        ], 201);
 
     }
 
