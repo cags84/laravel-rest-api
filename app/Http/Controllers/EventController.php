@@ -18,7 +18,17 @@ class EventController extends Controller
                 $request->input('destination'),
                 $request->input('amount')
             );
+        } elseif ($request->input('type') === 'withdraw') {
+            return $this->witdhraw(
+                $request->input('origin'),
+                $request->input('amount')
+            );
         }
+    }
+
+    private function witdhraw($origin, $amount)
+    {
+        $account = Account::findOrFail($origin);
 
     }
 
