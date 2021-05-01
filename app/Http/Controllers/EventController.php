@@ -24,11 +24,26 @@ class EventController extends Controller
                 $request->input('amount')
             );
         }
+        abort(404, 'Route not found!');
+    }
+
+    private function transfer($origin, $amount, $destination)
+    {
+
     }
 
     private function witdhraw($origin, $amount)
     {
         $account = Account::findOrFail($origin);
+        $account->balance -= $amount;
+        $account->save();
+
+        return response()->json([
+            "origin" => [
+                "id" => $origin,
+                "balance" => $account->balance
+            ]
+        ]);
 
     }
 
