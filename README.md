@@ -152,4 +152,27 @@ Si por casualidad ya hemos ingresado el git, podemos sacar estos del repo con el
 > git commit -m "Initial commit"
 ```
 
+## Implementar Balance de cuenta
+
+No olvidar setar correctamente los errores para que en nuestra aplicación los errores esten controlados.
+
+https://laravel.com/docs/8.x/errors
+
+No olvidar enviar en la cabecera de la petición el parametros siguiente, con el fin de decir al server que nos devuelva la información en formato JSON, dado que si no colocamos esto, nos devolverar en html y como estamos trabajando un api, no es buena idea.
+
+```sh
+Accept application/json
+```
+
+```sh
+```
+
+```sh
+```
+
+```sh
+```
+
+```sh
+```
 
