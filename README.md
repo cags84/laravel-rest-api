@@ -164,6 +164,8 @@ No olvidar enviar en la cabecera de la petición el parametros siguiente, con el
 Accept application/json
 ```
 
+Para poder seguir debemos crear las cuentas.
+
 ```sh
 ```
 
